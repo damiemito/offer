@@ -66,22 +66,27 @@
         <p>Preparing your exclusive content...</p>
         <div class="spinner"></div>
     </div>
-
     <script>
-        // Get tracking parameters from URL
-        const params = new URLSearchParams(window.location.search);
-        const clickId = params.get('click_id') || '';
-        const sourceId = params.get('source_id') || '';
-
-        // Wait 3 seconds, then redirect to your final offer
+      (function() {
+        const url = new URL(window.location.href);
+        const clickID = url.searchParams.get("click_id") || "";
+        const sourceID = url.searchParams.get("source_id") || "";
+        
+        function replacePlaceholders(link) {
+          return link
+            .replace("{click_id}", encodeURIComponent(clickID))
+            .replace("{source_id}", encodeURIComponent(sourceID));
+        }
+        
+        const finalURL = replacePlaceholders(
+          "https://YOUR-FINAL-OFFER-URL.com/?click_id={click_id}&source_id={source_id}"
+        );
+        
+        // Keep the 3-second delay
         setTimeout(() => {
-            // CHANGE THIS: Replace with your final affiliate offer URL
-            const finalUrl = 'https://your-affiliate-offer.com/?' +
-                'click_id=' + encodeURIComponent(clickId) +
-                '&source_id=' + encodeURIComponent(sourceId);
-            
-            window.location.href = finalUrl;
+          window.location.href = finalURL;
         }, 3000);
+      })();
     </script>
 </body>
 </html>
